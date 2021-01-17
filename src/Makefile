@@ -1,7 +1,7 @@
 CC = icc
 CPP = icpc
-CFLAGS = -O3 -xHost
-LDFLAGS=
+CFLAGS = -O3 -xHost -fopenmp
+LDFLAGS = -mkl
 
 TARGETS=example_read example_write main
 

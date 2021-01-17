@@ -39,6 +39,10 @@
 
 #define NUM_PLARGE_ELEMENTS 2000000
 
+/* Consider adjusting LOOP_COUNT based on the performance of your */
+/* computer to make sure that total run time is at least 1 second */
+#define LOOP_COUNT 20
+
 /*-------- End Constant Definitions -------------------------------------*/
 
 

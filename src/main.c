@@ -44,8 +44,10 @@ int main(int argc, char ** argv)
     int nNz;
     int nRow, *indRow;
     int nCol, *indCol;
+    int *csr_row;
     double nz;
     double * val;
+    double normalizeTime, totalTime;
     int ret_code;
     MM_typecode matcode;
     FILE *f;
@@ -103,8 +105,10 @@ int main(int argc, char ** argv)
     {
         printf("Executing Matrix %s, please wait ...\n", arrayInput[i]);
 
-        /* Initialize qLarge */
+        /* Initialize Variables */
         memset(qLarge, 0, nArray );
+        normalizeTime = 0;
+        totalTime = 0;
 
         if ((f = fopen(arrayInput[i], "r")) == NULL)
         {
@@ -138,6 +142,8 @@ int main(int argc, char ** argv)
             indRow = (int *) _mm_malloc(nNz * sizeof(int), sizeof(double));
             indCol = (int *) _mm_malloc(nNz * sizeof(int), sizeof(double));
             val = (double *) _mm_malloc(nNz * sizeof(double), sizeof(double));
+            csr_row = (int *) _mm_malloc((nRow+1) * sizeof(int), sizeof(double));
+            memset(csr_row, 0, (nRow+1) * sizeof(int) );
     /* NOTE: when reading in doubles, ANSI C requires the use of the "l"  */
     /*   specifier as in "%lg", "%lf", "%le", otherwise errors will occur */
     /*  (ANSI C X3.159-1989, Sec. 4.9.6.2, p. 136 lines 13-15)            */
@@ -153,6 +159,14 @@ int main(int argc, char ** argv)
         }
 
         /************************/
+        /* get CSR format       */
+        /************************/
+        for (j = 0; j < nNz; j++)
+            csr_row[indRow[j] + 1]++;
+        for (j = 0; j < nRow; j++)
+            csr_row[j + 1] += csr_row[j];
+
+        /************************/
         /* now write out matrix */
         /************************/
         mm_write_banner(stdout, matcode);
@@ -161,12 +175,40 @@ int main(int argc, char ** argv)
 
 
 
-        fMultiplyCOO(indRow, indCol, val, nNz, pLarge, qLarge);
+        fgetResultMultiplyCOO(nRow, nCol, indRow, indCol, val, nNz, pLarge, 
+                                    qLarge, &normalizeTime, &totalTime);
 
+        printf("COO     - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
+                                arrayInput[i], normalizeTime, totalTime);
         
+        fgetResultMultiplyMKLCOO(nRow, nCol, indRow, indCol, val, nNz, pLarge, 
+                                    qLarge, &normalizeTime, &totalTime);
+        
+        printf("MKL-COO - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
+                                arrayInput[i], normalizeTime, totalTime);
+
+        fgetResultMultiplyCSR(nRow, nCol, csr_row, indCol, val, nNz, pLarge, 
+                                    qLarge, &normalizeTime, &totalTime);
+        
+        printf("CSR     - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
+                                arrayInput[i], normalizeTime, totalTime);
+        
+        fgetResultMultiplyCSR_OMP(nRow, nCol, csr_row, indCol, val, nNz, pLarge, 
+                                    qLarge, &normalizeTime, &totalTime);
+        
+        printf("CSR-OMP - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
+                                arrayInput[i], normalizeTime, totalTime);
+        
+        fgetResultMultiplyMKLCSR(nRow, nCol, indRow, csr_row, indCol, val, nNz, pLarge, 
+                                    qLarge, &normalizeTime, &totalTime);
+        
+        printf("MKL-CSR - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
+                                arrayInput[i], normalizeTime, totalTime);
+
 
         _mm_free(indRow);
         _mm_free(indCol);
+        _mm_free(csr_row);
         _mm_free(val);
 
     }
