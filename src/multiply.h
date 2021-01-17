@@ -1,43 +1,34 @@
 /*-----------------------------------------------------------------------*/
-/* Program: utils.h                                                      */
+/* Program: multiply.h                                                   */
 /*                                                                       */
 /* Description:                                                          */
-/* Some definitions.                                                     */
+/* This program execute the matrix multiplication code in C.             */
 /*-----------------------------------------------------------------------*/
 /* Erik Velasquez                                                        */
 /*-----------------------------------------------------------------------*/
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef MULTIPLY_H
+#define MULTIPLY_H
 
 /*------------------------ Standard C/C++ Libraries ---------------------*/
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
+#include <math.h>
 #include <time.h>
+#include <sys/time.h>
+#include <string.h>
 
 /*------------------------ Other Libraries ------------------------------*/
-/*** EMPTY ***/
+/* Utility Libraries */
+#include "utils.h"
 
+/* Get Time Libraries */
+#include "gtime.h"
 
 
 /*--------- Constant Definitions ----------------------------------------*/
 
-#define DEFAULT_INPUT "../input/input.txt"
-
-#define DEFAULT_RUNS "../result/"
-
-#define CODE_VERSION "v001"
-
-#define SEPARATOR "-"
-
-#define OUTPUT_EXTENSION ".txt"
-
-#define STR_MAX_SIZE 100
-
-#define MAX_N_INPUT 2000
-
-#define NUM_PLARGE_ELEMENTS 2000000
+/*** EMPTY ***/
 
 /*-------- End Constant Definitions -------------------------------------*/
 
@@ -53,9 +44,7 @@
 
 /*----- Variables -------------------------------------------------------*/
 
-/*Min and Max Random values*/
-static const double randMinValue = -1.0f;
-static const double randMaxValue = 1.0f;
+/*** EMPTY ***/
 
 /*----- End Variables ---------------------------------------------------*/
 
@@ -80,32 +69,15 @@ static const double randMaxValue = 1.0f;
 /*---- Function Prototypes ----------------------------------------------*/
 
 /*-----------------------------------------------------------------------*/
-/* function: fReadInputFile                                              */
+/* function: fMultiplyCOO                                                */
 /*                                                                       */
 /* Description:                                                          */
-/* Read input file                                                       */
+/* COO multiply code                                                     */
 /*-----------------------------------------------------------------------*/
-void fReadInputFile(char * fileName, 
-                    char arrayInput[MAX_N_INPUT][STR_MAX_SIZE], 
-                    int * numInputs);
+void fMultiplyCOO(int *row, int *col, double *val, int nnz, double *p, 
+                                                            double *q);
 
 
-/*-----------------------------------------------------------------------*/
-/* function: fRand                                                       */
-/*                                                                       */
-/* Description:                                                          */
-/* generate random number between fMin and fMax                          */
-/*-----------------------------------------------------------------------*/
-double fRand(double fMin, double fMax);
-
-
-/*-----------------------------------------------------------------------*/
-/* function: fgeneratePLarge                                             */
-/*                                                                       */
-/* Description:                                                          */
-/* generate random pLarge                                                */
-/*-----------------------------------------------------------------------*/
-void fgeneratePLarge(double * pLarge);
 
 /*----- End Function Prototypes -----------------------------------------*/
 

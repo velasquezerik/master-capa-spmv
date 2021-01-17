@@ -24,6 +24,8 @@
 /* Matrix Market Libraries */
 #include "mmio.h"
 
+/* Multiply Libraries */
+#include "multiply.h"
 
 /*-------------------------------------------------------------------------
 *                             Main Function
@@ -87,6 +89,9 @@ int main(int argc, char ** argv)
     /*----------------------- End Reserve Memmory -----------------------*/
  
     /*-------------------------- Main Code ------------------------------*/
+
+    /*Define pLarge*/
+    fgeneratePLarge(pLarge);
     
     // read input file
     fReadInputFile(inputFileName, arrayInput, &numInputs);
@@ -97,6 +102,9 @@ int main(int argc, char ** argv)
     for (i = 0; i < numInputs; i++)
     {
         printf("Executing Matrix %s, please wait ...\n", arrayInput[i]);
+
+        /* Initialize qLarge */
+        memset(qLarge, 0, nArray );
 
         if ((f = fopen(arrayInput[i], "r")) == NULL)
         {
@@ -150,6 +158,12 @@ int main(int argc, char ** argv)
         mm_write_banner(stdout, matcode);
         printf("Matrix %s, Rows=%i, Cols=%i, NNZ=%i ...\n", arrayInput[i], 
                                                         nCol, nRow, nNz);
+
+
+
+        fMultiplyCOO(indRow, indCol, val, nNz, pLarge, qLarge);
+
+        
 
         _mm_free(indRow);
         _mm_free(indCol);

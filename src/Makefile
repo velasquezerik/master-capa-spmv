@@ -13,7 +13,7 @@ example_read: example_read.c mmio.o
 example_write: example_write.c mmio.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-main: main.c mmio.o gtime.o utils.o
+main: main.c mmio.o gtime.o utils.o multiply.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 clean:

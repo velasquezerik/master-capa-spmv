@@ -59,4 +59,34 @@ void fReadInputFile(char * fileName,
 
 }
 
+/*-----------------------------------------------------------------------*/
+/* function: fRand                                                       */
+/*                                                                       */
+/* Description:                                                          */
+/* generate random number between fMin and fMax                          */
+/*-----------------------------------------------------------------------*/
+double fRand(double fMin, double fMax)
+{
+    double f = (double)rand() / RAND_MAX;
+    return fMin + f * (fMax - fMin);
+}
+
+
+/*-----------------------------------------------------------------------*/
+/* function: fgeneratePLarge                                             */
+/*                                                                       */
+/* Description:                                                          */
+/* generate random pLarge                                                */
+/*-----------------------------------------------------------------------*/
+void fgeneratePLarge(double * pLarge)
+{
+    int i = 0;
+    for (i = 0; i < NUM_PLARGE_ELEMENTS; i++)
+    {
+        pLarge[i] = fRand(randMinValue, randMaxValue);
+    }
+
+}
+
+
 /*---- End Function Definitions -----------------------------------------*/
