@@ -1,0 +1,8 @@
+../mat/apache2/apache2.mtx
+../mat/atmosmodl/atmosmodl.mtx
+../mat/bone010/bone010.mtx
+../mat/cage13/cage13.mtx
+../mat/ecology2/ecology2.mtx
+../mat/parabolic_fem/parabolic_fem.mtx
+../mat/t2em/t2em.mtx
+../mat/thermal2/thermal2.mtx
