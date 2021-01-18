@@ -95,19 +95,27 @@ void fgetResultMultiplyMKLCOO(int nrow, int ncol, int *row, int *col,
     nz = (double)nnz / (double)nrow ;
 
     /* Warming up */
-    // mkl_sparse_d_create_coo (sparse_matrix_t *A, sparse_index_base_t indexing, MKL_INT rows, MKL_INT cols, MKL_INT nnz, MKL_INT *row_indx, MKL_INT * col_indx, double *values);
+    // mkl_sparse_d_create_coo (sparse_matrix_t *A, 
+    // sparse_index_base_t indexing, MKL_INT rows, MKL_INT cols, 
+    // MKL_INT nnz, MKL_INT *row_indx, MKL_INT * col_indx, double *values);
     sparse_matrix_t A;
-    mkl_sparse_d_create_coo(&A, SPARSE_INDEX_BASE_ZERO, nrow, ncol, nnz, row, col, val);
+    mkl_sparse_d_create_coo(&A, SPARSE_INDEX_BASE_ZERO, nrow, ncol, nnz, 
+                                                            row, col, val);
     struct matrix_descr descrA;
     descrA.type = SPARSE_MATRIX_TYPE_GENERAL;
     
-    //mkl_sparse_d_mv (const sparse_operation_t operation, const double alpha, const sparse_matrix_t A, const struct matrix_descr descr, const double *x, const double beta, double *y);
-    mkl_sparse_d_mv (SPARSE_OPERATION_NON_TRANSPOSE, alpha, A, descrA, p, beta, q);
+    //mkl_sparse_d_mv (const sparse_operation_t operation, 
+    // const double alpha, const sparse_matrix_t A, 
+    // const struct matrix_descr descr, const double *x, const double beta, 
+    // double *y);
+    mkl_sparse_d_mv (SPARSE_OPERATION_NON_TRANSPOSE, alpha, A, descrA, p, 
+                                                                beta, q);
 
     tic = fGetTime();
     for ( r = 0; r < LOOP_COUNT; r++)
     {
-        mkl_sparse_d_mv (SPARSE_OPERATION_NON_TRANSPOSE, alpha, A, descrA, p, beta, q);
+        mkl_sparse_d_mv (SPARSE_OPERATION_NON_TRANSPOSE, alpha, A, descrA, 
+                                                            p, beta, q);
 
     }
     toc = fGetTime();
@@ -187,9 +195,10 @@ void fgetResultMultiplyCSR(int nrow, int ncol, int *row_off, int *col,
 /* Description:                                                          */
 /* MKL multiply code, timing results, CSR matrix                         */
 /*-----------------------------------------------------------------------*/
-void fgetResultMultiplyMKLCSR(int nrow, int ncol, int *row, int *row_off, int *col, 
-                            double *val, int nnz, double *p, double *q, 
-                            double *normalizedTime, double *totalTime)
+void fgetResultMultiplyMKLCSR(int nrow, int ncol, int *row, int *row_off, 
+                            int *col, double *val, int nnz, double *p, 
+                            double *q, double *normalizedTime, 
+                            double *totalTime)
 {
     int m, n, i, r;
     double tic, toc, eTime;
@@ -202,18 +211,23 @@ void fgetResultMultiplyMKLCSR(int nrow, int ncol, int *row, int *row_off, int *c
 
     /* Warming up */
     sparse_matrix_t A,B;
-    mkl_sparse_d_create_coo(&B, SPARSE_INDEX_BASE_ZERO, nrow, ncol, nnz, row, col, val);
+    mkl_sparse_d_create_coo(&B, SPARSE_INDEX_BASE_ZERO, nrow, ncol, nnz, 
+                                                            row, col, val);
     mkl_sparse_convert_csr (B, SPARSE_OPERATION_NON_TRANSPOSE, &A);
     struct matrix_descr descrA;
     descrA.type = SPARSE_MATRIX_TYPE_GENERAL;
     
-    //mkl_sparse_d_mv (const sparse_operation_t operation, const double alpha, const sparse_matrix_t A, const struct matrix_descr descr, const double *x, const double beta, double *y);
-    mkl_sparse_d_mv (SPARSE_OPERATION_NON_TRANSPOSE, alpha, A, descrA, p, beta, q);
+    //mkl_sparse_d_mv (const sparse_operation_t operation, const double alpha, 
+    // const sparse_matrix_t A, const struct matrix_descr descr, 
+    // const double *x, const double beta, double *y);
+    mkl_sparse_d_mv (SPARSE_OPERATION_NON_TRANSPOSE, alpha, A, descrA, p, 
+                                                                beta, q);
 
     tic = fGetTime();
     for ( r = 0; r < LOOP_COUNT; r++)
     {
-        mkl_sparse_d_mv (SPARSE_OPERATION_NON_TRANSPOSE, alpha, A, descrA, p, beta, q);
+        mkl_sparse_d_mv (SPARSE_OPERATION_NON_TRANSPOSE, alpha, A, descrA, 
+                                                            p, beta, q);
 
     }
     toc = fGetTime();
@@ -234,8 +248,8 @@ void fgetResultMultiplyMKLCSR(int nrow, int ncol, int *row, int *row_off, int *c
 /* Description:                                                          */
 /* CSR multiply code, with omp                                           */
 /*-----------------------------------------------------------------------*/
-void fMultiplyCSR_OMP(int nrow, int ncol, int *row_off, int *col, double *val, 
-                                            int nnz, double *x, double *y)
+void fMultiplyCSR_OMP(int nrow, int ncol, int *row_off, int *col, 
+                                double *val, int nnz, double *x, double *y)
 {
     int i, j, k=0;
     #pragma omp parallel for

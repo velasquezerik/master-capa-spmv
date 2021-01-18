@@ -128,12 +128,13 @@ int main(int argc, char ** argv)
                                                 && mm_is_sparse(matcode) )
             {
                 printf("Sorry, this application does not support ");
-                printf("Market Market type: [%s]\n", mm_typecode_to_str(matcode));
+                printf("Market Market type: [%s]\n", 
+                                            mm_typecode_to_str(matcode));
                 return EXIT_FAILURE;
             }
 
             /* find out size of sparse matrix .... */
-            if ((ret_code = mm_read_mtx_crd_size(f, &nRow, &nCol, &nNz)) !=0)
+            if((ret_code = mm_read_mtx_crd_size(f,&nRow,&nCol, &nNz)) != 0)
             {
                 return EXIT_FAILURE;
             }
@@ -144,9 +145,9 @@ int main(int argc, char ** argv)
             val = (double *) _mm_malloc(nNz * sizeof(double), sizeof(double));
             csr_row = (int *) _mm_malloc((nRow+1) * sizeof(int), sizeof(double));
             memset(csr_row, 0, (nRow+1) * sizeof(int) );
-    /* NOTE: when reading in doubles, ANSI C requires the use of the "l"  */
-    /*   specifier as in "%lg", "%lf", "%le", otherwise errors will occur */
-    /*  (ANSI C X3.159-1989, Sec. 4.9.6.2, p. 136 lines 13-15)            */
+    /* NOTE: when reading in doubles, ANSI C requires the use of the "l" */
+    /*   specifier as in "%lg", "%lf", "%le", otherwise errors will occur*/
+    /*  (ANSI C X3.159-1989, Sec. 4.9.6.2, p. 136 lines 13-15)           */
             for (j=0; j<nNz; j++)
             {
                 fscanf(f, "%d %d %lg\n", &indRow[j], &indCol[j], &val[j]);
@@ -193,14 +194,15 @@ int main(int argc, char ** argv)
         printf("CSR     - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
                                 arrayInput[i], normalizeTime, totalTime);
         
-        fgetResultMultiplyCSR_OMP(nRow, nCol, csr_row, indCol, val, nNz, pLarge, 
-                                    qLarge, &normalizeTime, &totalTime);
+        fgetResultMultiplyCSR_OMP(nRow, nCol, csr_row, indCol, val, nNz, 
+                                pLarge, qLarge, &normalizeTime, &totalTime);
         
         printf("CSR-OMP - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
                                 arrayInput[i], normalizeTime, totalTime);
         
-        fgetResultMultiplyMKLCSR(nRow, nCol, indRow, csr_row, indCol, val, nNz, pLarge, 
-                                    qLarge, &normalizeTime, &totalTime);
+        fgetResultMultiplyMKLCSR(nRow, nCol, indRow, csr_row, indCol, val, 
+                                nNz, pLarge, qLarge, &normalizeTime, 
+                                &totalTime);
         
         printf("MKL-CSR - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
                                 arrayInput[i], normalizeTime, totalTime);

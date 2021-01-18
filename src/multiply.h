@@ -131,9 +131,10 @@ void fgetResultMultiplyCSR(int nrow, int ncol, int *row_off, int *col,
 /* Description:                                                          */
 /* MKL multiply code, timing results, CSR matrix                         */
 /*-----------------------------------------------------------------------*/
-void fgetResultMultiplyMKLCSR(int nrow, int ncol, int *row, int *row_off, int *col, 
-                            double *val, int nnz, double *p, double *q, 
-                            double *normalizedTime, double *totalTime);
+void fgetResultMultiplyMKLCSR(int nrow, int ncol, int *row, int *row_off, 
+                            int *col, double *val, int nnz, double *p, 
+                            double *q, double *normalizedTime, 
+                            double *totalTime);
 
 
 /*-----------------------------------------------------------------------*/
@@ -142,8 +143,8 @@ void fgetResultMultiplyMKLCSR(int nrow, int ncol, int *row, int *row_off, int *c
 /* Description:                                                          */
 /* CSR multiply code, with omp                                           */
 /*-----------------------------------------------------------------------*/
-void fMultiplyCSR_OMP(int nrow, int ncol, int *row_off, int *col, double *val, 
-                                            int nnz, double *x, double *y);
+void fMultiplyCSR_OMP(int nrow, int ncol, int *row_off, int *col, 
+                            double *val, int nnz, double *x, double *y);
 
 
 /*-----------------------------------------------------------------------*/
