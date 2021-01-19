@@ -88,5 +88,47 @@ void fgeneratePLarge(double * pLarge)
 
 }
 
+/*-----------------------------------------------------------------------*/
+/* function: fwriteOutputResultFile                                      */
+/*                                                                       */
+/* Description:                                                          */
+/* Write Output Result file                                              */
+/*-----------------------------------------------------------------------*/
+void fwriteOutputResultFile(char * fileName, 
+                    char arrayInput[MAX_N_INPUT][STR_MAX_SIZE], 
+                    int * numInputs, 
+                    double *coo_normalizeTimeResult, double *coo_totalTimeResult,
+                    double *coomkl_normalizeTimeResult, double *coomkl_totalTimeResult,
+                    double *csr_normalizeTimeResult, double *csr_totalTimeResult,
+                    double *csromp_normalizeTimeResult, double *csromp_totalTimeResult,
+                    double *csrmkl_normalizeTimeResult, double *csrmkl_totalTimeResult)
+{
+
+    FILE * fp;
+    int i;
+    fp = fopen(fileName, "w");
+    if (fp == NULL)
+    {
+        return;
+    }
+    else
+    {
+        fprintf(fp, "MatrixName,N-COO,T-COO,N-COOMKL,T-COOMKL,N-CSR,T-CSR,N-CSROMP,T-CSROMP,N-CSRMKL,T-CSRMKL\n");
+        for (i = 0; i < *numInputs; i++)
+        {
+            fprintf(fp, "%s,%.15lf,%.15lf,%.15lf,%.15lf,%.15lf,%.15lf,%.15lf,%.15lf,%.15lf,%.15lf\n",
+                                arrayInput[i],
+                                coo_normalizeTimeResult[i], coo_totalTimeResult[i],
+                                coomkl_normalizeTimeResult[i], coomkl_totalTimeResult[i],
+                                csr_normalizeTimeResult[i], csr_totalTimeResult[i],
+                                csromp_normalizeTimeResult[i], csromp_totalTimeResult[i],
+                                csrmkl_normalizeTimeResult[i], csrmkl_totalTimeResult[i]
+                                );
+        }
+        fclose(fp);
+    }
+
+}
+
 
 /*---- End Function Definitions -----------------------------------------*/

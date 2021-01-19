@@ -36,6 +36,16 @@ int main(int argc, char ** argv)
 
     char inputFileName[STR_MAX_SIZE];
     char arrayInput[MAX_N_INPUT][STR_MAX_SIZE];
+    double coo_normalizeTimeResult[MAX_N_INPUT];
+    double coo_totalTimeResult[MAX_N_INPUT];
+    double coomkl_normalizeTimeResult[MAX_N_INPUT];
+    double coomkl_totalTimeResult[MAX_N_INPUT];
+    double csr_normalizeTimeResult[MAX_N_INPUT];
+    double csr_totalTimeResult[MAX_N_INPUT];
+    double csromp_normalizeTimeResult[MAX_N_INPUT];
+    double csromp_totalTimeResult[MAX_N_INPUT];
+    double csrmkl_normalizeTimeResult[MAX_N_INPUT];
+    double csrmkl_totalTimeResult[MAX_N_INPUT];
     int numInputs;
     int i, j;
     int nArray;
@@ -181,24 +191,32 @@ int main(int argc, char ** argv)
 
         printf("COO     - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
                                 arrayInput[i], normalizeTime, totalTime);
+        coo_normalizeTimeResult[i] = normalizeTime;
+        coo_totalTimeResult[i] = totalTime;
         
         fgetResultMultiplyMKLCOO(nRow, nCol, indRow, indCol, val, nNz, pLarge, 
                                     qLarge, &normalizeTime, &totalTime);
         
         printf("MKL-COO - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
                                 arrayInput[i], normalizeTime, totalTime);
+        coomkl_normalizeTimeResult[i] = normalizeTime;
+        coomkl_totalTimeResult[i] = totalTime;
 
         fgetResultMultiplyCSR(nRow, nCol, csr_row, indCol, val, nNz, pLarge, 
                                     qLarge, &normalizeTime, &totalTime);
         
         printf("CSR     - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
                                 arrayInput[i], normalizeTime, totalTime);
+        csr_normalizeTimeResult[i] = normalizeTime;
+        csr_totalTimeResult[i] = totalTime;
         
         fgetResultMultiplyCSR_OMP(nRow, nCol, csr_row, indCol, val, nNz, 
                                 pLarge, qLarge, &normalizeTime, &totalTime);
         
         printf("CSR-OMP - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
                                 arrayInput[i], normalizeTime, totalTime);
+        csromp_normalizeTimeResult[i] = normalizeTime;
+        csromp_totalTimeResult[i] = totalTime;
         
         fgetResultMultiplyMKLCSR(nRow, nCol, indRow, csr_row, indCol, val, 
                                 nNz, pLarge, qLarge, &normalizeTime, 
@@ -206,6 +224,8 @@ int main(int argc, char ** argv)
         
         printf("MKL-CSR - Matrix %s, NormalizeTime=%.12lf, TotalTime=%lf\n", 
                                 arrayInput[i], normalizeTime, totalTime);
+        csrmkl_normalizeTimeResult[i] = normalizeTime;
+        csrmkl_totalTimeResult[i] = totalTime;
 
 
         _mm_free(indRow);
@@ -214,6 +234,13 @@ int main(int argc, char ** argv)
         _mm_free(val);
 
     }
+
+    fwriteOutputResultFile("salida.txt", arrayInput, &numInputs, 
+                    coo_normalizeTimeResult, coo_totalTimeResult, 
+                    coomkl_normalizeTimeResult, coomkl_totalTimeResult,
+                    csr_normalizeTimeResult, csr_totalTimeResult,
+                    csromp_normalizeTimeResult, csromp_totalTimeResult,
+                    csrmkl_normalizeTimeResult, csrmkl_totalTimeResult);
 
     /*-------------------------- End Main Code --------------------------*/
 

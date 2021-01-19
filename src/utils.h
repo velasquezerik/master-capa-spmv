@@ -111,6 +111,22 @@ double fRand(double fMin, double fMax);
 /*-----------------------------------------------------------------------*/
 void fgeneratePLarge(double * pLarge);
 
+
+/*-----------------------------------------------------------------------*/
+/* function: fwriteOutputResultFile                                      */
+/*                                                                       */
+/* Description:                                                          */
+/* Write Output Result file                                              */
+/*-----------------------------------------------------------------------*/
+void fwriteOutputResultFile(char * fileName, 
+                    char arrayInput[MAX_N_INPUT][STR_MAX_SIZE], 
+                    int * numInputs, 
+                    double *coo_normalizeTimeResult, double *coo_totalTimeResult,
+                    double *coomkl_normalizeTimeResult, double *coomkl_totalTimeResult,
+                    double *csr_normalizeTimeResult, double *csr_totalTimeResult,
+                    double *csromp_normalizeTimeResult, double *csromp_totalTimeResult,
+                    double *csrmkl_normalizeTimeResult, double *csrmkl_totalTimeResult);
+
 /*----- End Function Prototypes -----------------------------------------*/
 
 #endif
